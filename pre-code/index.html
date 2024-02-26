@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quizz</title>
+    <script src="questions.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <!-- Div pour formulaire pour demander le nom et commencer le quizz -->
+    <div id="div_nom">
+        <form id="form_nom">
+            <label for="nom">Nom:</label>
+            <input type="text" name="nom" id="nom">
+            <button type="submit">Commencer</button>
+        </form>
+    </div>
+
+    <!-- Div pour formulaire pour répondre à une question -->
+    <div id="div_question" style="display: none">
+        <p id="question_text">Question</p>
+        <form id="form_question">
+            <label for="reponse">Réponse:</label>
+            <select name="reponse" id="reponse">
+                <option value="a" id="question_resA">XXX</option>
+                <option value="b" id="question_resB">XXX</option>
+                <option value="c" id="question_resC">XXX</option>
+                <option value="d" id="question_resD">XXX</option>
+            </select>
+            <button type="submit">Suivant</button>
+        </form>
+    </div>
+
+    <!-- Div pour resultats -->
+    <div id="div_results" style="display: none">
+        <p id="p_results">XXX</p>
+    </div>
+
+    <!-- <script>
+        
+      </script> -->
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Firebase - Introduction</title>
+  <link rel="shortcut icon" type="image/png" href="images/ico_full.png"/>
+  <link rel="stylesheet" href="stylesheet/prism.css">
+  <link rel="stylesheet" href="stylesheet/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+  <!-- Introduction -->
+  <div class="banner" style="display: block !important; background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(images/Blog-SQLDatabaseSchemas-IM-JY-67189.jpg);">
+    <div class="container text-center">
+      <div class="main">
+        <img src="images/logo.png" alt="">
+        <div class="class-title">
+          <h1>Firebase #1</h1>
+        </div>
+      </div>
+      <p>Lorsqu'on a beaucoup de données à gérer, il est souvent préférable de les stocker en externe. <b>Firebase</b> nous permettra de stocker et d'accéder à nos données facilement.</p>
+      <a class="btn btn-primary tl-button" href="#challenge" role="button">Commencer !</a>
+    </div>
+  </div>
+
+  <div class="container" id="challenge">
+
+    <div class="accordion" id="accordionexemple">
+
+      <!-- Etape 1 -->
+      <div class="card">
+        <div class="card-header" id="heading1">
+          <h2 class="mb-0">
+            <button class="btn btn-link done task" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+              Etape 1 - Introduction
+            </button>
+          </h2>
+        </div>
+        <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>Aujourd'hui on va explorer le monde des bases de données. Une base de données est, comme le nom d'indique, un lieu centralisé pour garder toutes les données importantes de notre site. De cette manière, pas toutes les informations sont stockées sur le site lui même, permettant d'interagir avec d'autres individuels. Nous allons travailler sur un exemple de jeu de Quizz.</p>
+
+            <p>Nous allons utiliser un système qui s'appelle <b>Firebase</b>. Firebase est un système qui propose une grande multitude de services pour des applications web. Un des services est <b>Firestore</b>, un service de base de données.</p>
+
+            <p>Pour correctement entamer cette fiche, assure-toi que tu as:</p>
+            <ul>
+              <li>Un compte <a href="https://repl.it/">Repl.It</a></li>
+              <li>Un compte Google</li>
+            </ul>
+            <p>Ensuite, assure-toi de te munir d'une grande motivation et soif d'apprendre!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 2 -->
+      <div class="card">
+        <div class="card-header" id="heading2">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+              Etape 2 - Application sans Firebase
+            </button>
+          </h2>
+        </div>
+        <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>Avant d'ajouter Firebase à notre application, nous devons avoir une application de base. L'application d'aujourd'hui sera un jeu de quizz. Il sera structuré selon la structure suivante:</p>
+            <ul>
+              <li>Au début, l'application demande le nom du joueur, et affiche un bouton pour commencer le jeu.</li>
+              <li>Ensuite, plusieurs questions s'afficheront l'une après l'autre. Pour chaque question, la question ainsi que 4 options seront affichées. Le joueur est amené à séléctionner une option, et d'appuyer sur le bouton pour continuer vers la question suivante.</li>
+              <li>Après toutes les questions, le score et le temps du joueur est affiché.</li>
+              <li>Nous allons également ajouter un classement plus tard.</li>
+            </ul>
+
+            <p>Le but de ce cours n'est pas de développer un jeu front-end. Le code de base est entièrement listé ci-dessous. Assure-toi de le parcourir en entier et de répondre correctement aux questions en fin d'étape.</p>
+
+            <p>Voici le code <code>index.html</code>:</p>
+            <pre><code class="language-html">
+              &lt;!DOCTYPE html&gt;
+              &lt;html&gt;
+              &lt;head&gt;
+                  &lt;title&gt;Quizz&lt;/title&gt;
+                  &lt;script src="questions.js"&gt;&lt;/script&gt;
+              &lt;/head&gt;
+              &lt;body&gt;
+                  &lt;!-- Div pour formulaire pour demander le nom et commencer le quizz --&gt;
+                  &lt;div id="div_nom"&gt;
+                      &lt;form id="form_nom"&gt;
+                          &lt;label for="nom"&gt;Nom:&lt;/label&gt;
+                          &lt;input type="text" name="nom" id="nom"&gt;
+                          &lt;button type="submit"&gt;Commencer&lt;/button&gt;
+                      &lt;/form&gt;
+                  &lt;/div&gt;
+
+                  &lt;!-- Div pour formulaire pour répondre à une question --&gt;
+                  &lt;div id="div_question" style="display: none"&gt;
+                      &lt;p id="question_text"&gt;Question&lt;/p&gt;
+                      &lt;form id="form_question"&gt;
+                          &lt;label for="reponse"&gt;Réponse:&lt;/label&gt;
+                          &lt;select name="reponse" id="reponse"&gt;
+                              &lt;option value="a" id="question_resA"&gt;XXX&lt;/option&gt;
+                              &lt;option value="b" id="question_resB"&gt;XXX&lt;/option&gt;
+                              &lt;option value="c" id="question_resC"&gt;XXX&lt;/option&gt;
+                              &lt;option value="d" id="question_resD"&gt;XXX&lt;/option&gt;
+                          &lt;/select&gt;
+                          &lt;button type="submit"&gt;Suivant&lt;/button&gt;
+                      &lt;/form&gt;
+                  &lt;/div&gt;
+
+                  &lt;!-- Div pour resultats --&gt;
+                  &lt;div id="div_results" style="display: none"&gt;
+                      &lt;p id="p_results"&gt;XXX&lt;/p&gt;
+                  &lt;/div&gt;
+
+                  &lt;script src="script.js"&gt;&lt;/script&gt;
+              &lt;/body&gt;
+              &lt;/html&gt;
+            </code></pre>
+
+            <p>Voici le code <code>questions.js</code> (tu peux bien entendu modifier les questions!):</p>
+
+            <pre><code class="language-js">
+              let questions = [
+                {
+                    "question": "Q1",
+                    "answers": {
+                        "a": "A1",
+                        "b": "A2",
+                        "c": "A3",
+                        "d": "A4"
+                    },
+                    "correct": "a"
+                },
+                {
+                    "question": "Q2",
+                    "answers": {
+                        "a": "A1",
+                        "b": "A2",
+                        "c": "A3",
+                        "d": "A4"
+                    },
+                    "correct": "a"
+                },
+                {
+                    "question": "Q3",
+                    "answers": {
+                        "a": "A1",
+                        "b": "A2",
+                        "c": "A3",
+                        "d": "A4"
+                    },
+                    "correct": "a"
+                }
+              ]
+            </code></pre>
+
+            <p>Et finalement, le code <code>script.js</code>, qui contient la logique du site:</p>
+
+            <pre><code class="language-js">
+              // Variables globales
+              let nom = "";
+              let question_id = -1;
+              let question_total = 3;
+              let question_answer;
+              let score = 0;
+              let start, time;
+
+              // Elements de question et de réponses
+              const div_nom       = document.getElementById("div_nom");
+              const form_nom      = document.getElementById("form_nom");
+              const div_question  = document.getElementById("div_question");
+              const form_question = document.getElementById("form_question");
+              const question_text = document.getElementById("question_text");
+              const question_resA = document.getElementById("question_resA");
+              const question_resB = document.getElementById("question_resB");
+              const question_resC = document.getElementById("question_resC");
+              const question_resD = document.getElementById("question_resD");
+              const div_results   = document.getElementById("div_results");
+              const p_results     = document.getElementById("p_results");
+
+              // Function pour collecter nom et passer aux questions
+              function montrerQuestions(event) {
+                  event.preventDefault();
+                  start = Date.now();
+
+                  // Collecter réponse du formulaire
+                  const data = Object.fromEntries(new FormData(event.target));
+                  nom = data["nom"];
+
+                  // Cacher div pour le nom, et montrer div pour les questions
+                  div_nom.style.display = "none";
+                  div_question.style.display = "block";
+
+                  // Mettre à jour la question
+                  questionSuivante();
+              }
+
+              // Function pour corriger question et changer de question
+              function montrerQuestionSuivante(event) {
+                  event.preventDefault();
+
+                  // Collecter réponse du joueur
+                  const data = Object.fromEntries(new FormData(event.target));
+                  let res = data["reponse"];
+
+                  // Ajouter un point si la réponse est correcte
+                  if (res == question_answer) {
+                      score += 1;
+                  }
+
+                  // Mettre à jour la question
+                  questionSuivante();
+              }
+
+              // Function pour passer à la question suivante
+              function questionSuivante() {
+                  // Mettre à jour le numéro de la question
+                  question_id += 1;
+
+                  // Si à la fin des questions, passer aux résultats
+                  if (question_id == question_total) {
+                      montrerResultats();
+                  } else {
+                      // Mettre à jour la question et les réponses possibles
+                      question_text.textContent = questions[question_id].question;
+                      question_resA.textContent = questions[question_id].answers["a"];
+                      question_resB.textContent = questions[question_id].answers["b"];
+                      question_resC.textContent = questions[question_id].answers["c"];
+                      question_resD.textContent = questions[question_id].answers["d"];
+
+                      // Sauvegarder index de la réponse correcte
+                      question_answer = questions[question_id].correct;
+                  }
+              }
+
+              function montrerResultats() {
+                  // Calculer temps
+                  end = Date.now();
+                  let time = end - start;
+
+                  // Afficher nombre de points
+                  p_results.textContent = `Félicitations ${nom}, tu as obtenu ${score} points en ${time}ms!`;
+
+                  // Cacher les questions et montrer résultats
+                  div_question.style.display = "none";
+                  div_results.style.display = "block";
+              }
+
+              // Attacher des fonctions lorsque les formulaires sont soumis
+              form_nom.addEventListener("submit", montrerQuestions);
+              form_question.addEventListener("submit", montrerQuestionSuivante);
+            </code></pre>
+
+            <p>Une fois que tu as le code prêt de ton côté, assure-toi qu'il fonctionne correctement. Ensuite, répond aux questions suivantes;</p>
+
+            <ol>
+              <li>Comment change-t-on le contenu texte d'un paragraphe grâce à JavaScript?</li>
+              <li>Que signifie la commande <code>addEventListener</code>? Et quelle est l'importance du paramètre <code>"submit"</code>?</li>
+              <li>Pourquoi la ligne <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code> se trouve à la fin du <code>body</code> dans <code>index.html</code>? Pourquoi il n'est pas dans le <code>head</code>, ou en début de <code>body</code>? Essaie de le bouger pour voir ce qu'il se passe. Le jeu fonctionne encore?</li>
+              <li>Que signifie l'attribut <code>style="display: none"</code> dans les <code>div</code> avec identifiants <code>div_question</code> et <code>div_results</code>? Quel code JavaScript effectue un résultat similar? Et comment peut-on annuler cet effet, à nouveau grâce à une commande JavaScript?</li>
+              <li>Que fait la ligne <code>event.preventDefault();</code>? Que se passe-t-il si on l'enlève?</li>
+              <li>Pourquoi la variable globale <code>question_id</code> commence-t-elle à <code>-1</code> et non à <code>0</code>? Que se passe-t-il si on la mets à <code>0</code> initialement?</li>
+              <li>Que faut-il changer pour avoir plus de questions au total? Il ne faut pas uniquement ajouter plus de questions dans le fichier <code>questions.js</code>, mais il faut aussi apporter un changement dans <code>script.js</code>. C'est une seule ligne à changer ;-)</li>
+              <li>C'est import de bien écrire les "clés" dans le dictionnaire dans <code>questions.js</code>. Les "clés" sont les mots comment "question", "answers", "a", "b", "c", "d" et "correct". Que se passe-t-il si un de ces mots est mal écrit?</li>
+              <li>Que fait <code>Date.now()</code>?</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 3 -->
+      <div class="card">
+        <div class="card-header" id="heading3">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+              Etape 3 - Configurer Firebase
+            </button>
+          </h2>
+        </div>
+        <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>On va maintenant configurer Firebase afin de pouvoir ajouter la base de données à notre application. En un premier lieu, va sur <a href="https://console.firebase.google.com/u/1/">la console Firebase</a>, et connecte-toi avec ton compte Google. Tu devrais arriver sur la page suivante. Sélectionne "Create Project".</p>
+            <img width="100%" src="images/Create.png" alt="Create Project">
+
+            <p>Indique un nom pour le projet, accepte les conditions, et sélectionne "Continue". Ensuite, sélectionne à nouveau "Continue". Finalement, choisis un emplacement local (Belgique), accepte les conditions et clique sur "Create project". Ton projet sera dès lors créé, ceci peut prendre quelques minutes. </p>
+
+            <p>Pour commencer à utiliser Firebase, on doit y ajouter une application. Dans le centre de l'écran, sélectionne l'icône central de web.</p>
+            <img width="100%" src="images/web.png" alt="Web Project">
+
+            <p>Ici, donne un nom pour ton site, et choisis "Register app" (sans choisir "Also set up Firebase Hosting for this app."). Une fois que l'application enregistrée, copies la variable <code>firebaseConfig</code> (entière, environ 9 lignes), et colles la variable entière au début de ton code <code>script.js</code>. Tu peux ignorer le restant du code donné par Firebase. <b>Attention!</b> Le code ci-dessous est pour illustrer quoi copier, mais ton code sera différent!</p>
+
+            <img width="100%" src="images/keyt.png" alt="Configuration Key">
+
+            <p>Maintenant que l'application existe, on doit l'ajouter à notre code. La variable <code>firebaseConfig</code> que tu as copié constitue les codes d'accès à ton application, mais on doit ajouter l'interface pour s'y connecter. Tout d'abord, il nous faut installer Firebase dans notre application. Afin de ce faire, ajoute la ligne suivante dans le <code>head</code>.</p>
+
+            <pre><code class="language-js">
+              &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"&gt;&lt;/script&gt;
+            </code></pre>
+
+            <p>Grâce à cette ligne, on a toutes les fonctions de Firebase disponible dans notre code. Et comme notre <code>script.js</code> vient après (en fin de <code>body</code>), on peut les utiliser dans <code>script.js</code>. Utilisons donc la variable que nous avions copié-collé plus tôt, en ajoutant la ligne suivante en dessus de la variable.</p>
+
+            <pre><code class="language-js">
+              // Initialiser Firebase
+              firebase.initializeApp(firebaseConfig);
+            </code></pre>
+
+            <p>Ensuite, on va activer la base de données Firestore. Appuies sur "Cloud Firestore", et "Create database". </p>
+              
+            <img width="100%" src="images/firestore.png" alt="Firestore">
+
+            <p>Choisis une location locale (eur3 par exemple), et ensuite "Create". Avant d'intégere la base de données, on va désactiver la protection de la base de données, afin qu'on puisse jouer avec. Navigues sur "Rules", et changes le <code>false</code> sur la ligne 6 par un <code>true</code>, afin que le code lise</p>
+
+            <pre><code class="language-js">
+              rules_version = '2';
+
+              service cloud.firestore {
+                match /databases/{database}/documents {
+                  match /{document=**} {
+                    allow read, write: if true;
+                  }
+                }
+              }
+            </code></pre>
+
+            <p>Lorsque le code est modifié, appuies sur "Publish". Le changement effectué permet à tout le monde de lire et d'écrire dans la base de données. On pourra ajouter un niveau de sécurité plus tard, pour l'instant ceci suffira.</p>
+
+            <p>Nous devons également importer la base de données dans notre code. Dans le <code>index.html</code>, ajoutes la ligne suivante dans le <code>head</code>, après la ligne d'importation de Firebase:</p>
+            <pre><code class="language-html">
+              &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"&gt;&lt;/script&gt;
+            </code></pre>
+
+            <p>Dans le <code>script.js</code>, en dessus de l'initialisation de firebase, tu peux ajouter la ligne suivante, qui actives firestore:</p>
+
+            <pre><code class="language-js">
+              // Initialiser Firestore
+              const firestore = firebase.firestore();
+            </code></pre>
+
+            <p>Firebase est maintenant configuré et prêt à être utilisé!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 4 -->
+      <div class="card">
+        <div class="card-header" id="heading4">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+              Etape 4 - Intégration de Firestore
+            </button>
+          </h2>
+        </div>
+        <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>On peut maintenant commencer à changer notre code afin qu'il s'adapte avec notre base de données. La chose importante à changer en un premier lieu est comme on genére la variable <code>questions</code>. Dans notre première version du code, cette variable était importée d'un fichier JavaScript externe. On va maintenant faire en sorte que cette variable soit téléchargée directement de notre base de données Firebase.</p>
+
+            <p>Premièrement, retourne sur Firebase. Si tu as quitté la page, tu peux la retrouver <a href="https://console.firebase.google.com/u/1/">ici</a>. Choisis ton projet, et dans la barre de navigation à gauche choisis "Firestore Database".</p>
+
+            <p>La base de données fonctionne avec des "Collections" et des "Documents". Une collection represente des tirroirs, dans laquelle on peut mettre plusieurs boîtes, qu'on appelle des documents. Une boîte (document) peut contenir à peu près ce que l'on souhaite. Crée un document qui s'appelle "Questions" en appuyant sur "Start collection", en tapant le nom de la collection et en appuyant sur "Next". Ensuite on va créer notre premier document, qui va representer la première question. Appuie sur "Auto-ID" afin de générer un identifiant pour la question, ou donnes un ID unique à ta question toi-même. On va suivre le même format que plus tôt pour les questions. Copie la structure dans l'image qui suit, en adaptant ta question et tes réponses. N'oublie pas que les "clés" (les mots "questions", "answers", "a", "b", "c", "d" et "correct" sont importants!). Une fois que la première question est bien écrite, tu peux appuyer sur "Save".</p>
+
+            <img width="100%" src="images/document.png" alt="Document">
+
+            <p>Si tu as fait une erreur, ou que tu souhaites changer ta question plus tard, pas de soucis! En effet, tu peux directement changer les informations à partir de l'écran sur lequel tu te situes. Essaie d'adapter une des réponses. Tu peux également facilement ajouter d'autres questions, grâce au bouton "Add document". Ajoutes-en quelques unes (au total minimum 3).</p>
+
+            <p>On doit alors adapter notre code afin d'importer les questions de la base de données et non du fichier local <code>questions.js</code>. Tu peux effacer la ligne qui importe le document <code>questions.js</code>, comme nous n'en avons plus besoin. Si tu veux, tu peux aussi effacer le document <code>questions.js</code>, mais comme il n'est pas importé cela ne changera pas grand chose.</p>
+
+            <p>Afin de tester si tout a été bien fait pour le moment, on va lire les questions dans la base de données et les écrire dans la console. Ceci peut être fait grâce au code suivant:</p>
+
+            <pre><code class="language-js">
+              // Tester Firestore
+              firestore.collection("Questions").get().then(function (collection) {
+                collection.forEach(function (doc) {
+                  console.log(doc.data());
+                });
+              });
+            </code></pre>
+
+            <p>Voici quelques explications par rapport au petit code:</p>
+
+            <ol>
+              <li><code>firestore.collection("Questions").get()</code> va récuperer la collection qui s'appelle "Questions" (créée plus tôt) de la base de données.</li>
+              <li><code>.then()</code> est une méthode qui signifie que lorsque l'événement a été réalisé, la prochain événement peut commencer. Ceci arrive souvent en travaillant avec des APIs externes (tel firestore), parce que la connection n'est pas instantanée, et il faut attendre que Firestore ait renvoyé la collection avant de pouvoir travailler dessus. Le paramètre de la méthode <code>.then()</code> est une fonction qui prend la collection en input et fait quelque chose avec.</li>
+              <li><code>collection.forEach()</code> est une boucle sophisitiquée, où l'on boucle sur les éléments de <code>collection</code> (à savoir les documents). </li>
+              <li><code>doc.data()</code> récupere toutes les données du document en question.</li>
+            </ol>
+
+            <p>Si tout fonctionne correctement, en lançant ton code, tu devrais voir tes questions apparaître dans la console. Notes que l'ordre des questions n'est pas nécessairement le même que l'ordre dans lequel tu les as écrites.</p>
+
+            <img width="100%" src="images/console.png" alt="Document">
+
+            <p>On y est presque! On arrive à écrire les questions dans la console, il suffit maintenant de les stocker dans une variable. Afin de ce faire, suis les étapes suivantes:</p>
+
+            <ol>
+              <li>Crées une variable globale (définie en dehors de toute fonction) qui s'appelle <code>questions</code>. Note que ce nom était également l'ancien nom de variable pour les questions, donc on n'aura pas à changer le restant du code. Cette variable doit être définie avec la partie qu'on utilisait pour tester Firestore. Comme on va changer cette liste par la suite, tu peux définir cette variable avec <code>let</code>, plutôt que <code>const</code>. Quelle est la différence entre ces deux mots?</li>
+              <li>Plutôt que d'écrire dans la console les données de chaque question, on va les ajouter à cette liste. Pour ajouter un élément à une liste, tu peux utiliser <code>questions.push(XXX)</code>, où le "XXX" est à remplacer par les données de chaque question.</li>
+            </ol>
+
+            <p>Pour éviter des erreurs imprévues, il vaut mieux adapter la variable <code>question_total</code> également. Après qu'on ait écrites toutes les questions (après le <code>collection.forEach()</code>), tu peux mettre à jour la variable <code>question_total</code> afin de matcher le nombre exact de questions. Tu peux obtenir ce nombre grâce à la commande <code>questions.length()</code>.</p>
+
+            <p>Si tout se passe bien, tu as maintenant un code qui fonctionne exactement comme avant, mais où les questions sont stockées dans la base de données. Cela veut dire que si tu veux changer des questions, il suffit d'aller changer les questions dans la base de données, et il n'y a pas besoin de changer le code du site. Tu peux maintenant effacer le fichier <code>questions.js</code> pour de bon, comme on n'en aura plus besoin. Assure-toi bien que ton code fonctionne avant de passer à l'étape suivante.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 5 -->
+      <div class="card">
+        <div class="card-header" id="heading5">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+              Etape 5 - Classement
+            </button>
+          </h2>
+        </div>
+        <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>À la fin de notre quizz, le site affiche combien de points le joueur a obtenu. Mais s'il ne peut pas comparer avec d'autres c'est pas super intéressant. On va donc changer cela! Il y a deux étapes à faire afin d'arriver à cela:</p>
+            <ol>
+              <li>Premièrement, lorsqu'on joueur finit le jeu, on doit sauvegarder son nom et son score dans la base de données. Ainsi, on doit pouvoir écrire dans la base de données à partir du code (pour l'instant on n'a fait que lire dans la base de données).</li>
+              <li>Secondement, en fin de jeu, on doit lire les scores de tous les autres joueurs et les afficher.</li>
+            </ol>
+
+            <p>Pour la première étape, localises dans ton code la ligne où tu affiches le score du joueur. Elle ressemble à la suivante:</p>
+            <pre><code class="language-js">
+              p_results.textContent = `Félicitations ${nom}, tu as obtenu ${score} points!`;
+            </code></pre>
+
+            <p>Le format à suivre pour ajouter un document dans une collection est le suivant:</p>
+
+            <pre><code class="language-js">
+              firestore.collection("cities").add({
+                  name: "Tokyo",
+                  country: "Japan"
+              })
+              .then(function () {
+                  console.log("Document ajouté avec succès!");
+              })
+              .catch(function (error) {
+                  console.error("Erreur: ", error);
+              });
+            </code></pre>
+
+            <p>Quelques notes:</p>
+            <ul>
+              <li>Comme lors de la lecture des documents, on fait d'abord appel à la collection en quesiton grâce à <code>firestore.collection("NOM DE COLLECTION")</code>.</li>
+              <li>Pour ajouter un document à la collection en question, on utilise <code>.add(XXX)</code>, où "XXX" est un dictionnaire avec les valeurs à écrire.</li>
+              <li>Le reste (le <code>.then()</code> et <code>.catch()</code>) sont simplement pour avec logs dans la console, mais ne sont pas importants pour la logique du code. Ils sont importants pour trouver des erreurs.</li>
+            </ul>
+
+            <p>Ajoute un code similaire à celui de ci-haut, en adaptant la collection pour être "Score", en adaptant les valeurs du dictionnaire. Le dictionnaire doit contenir deux entrées, notamment <code>name: XXX</code> et <code>score: XXX</code>.</p>
+
+            <p>Joue à ton Quizz une fois et vérifies dans Firebase que la collection "Score" s'est bien créé, et que ton score a bien été ajouté.</p>
+
+            <img width="100%" src="images/score.png" alt="Score">
+
+            <p>Super! On peut alors passer à la seconde étape, notamment afficher tous les scores en fin de partie. Pour ce faire, on va ajouter une liste dans notre document <code>index.html</code>, dans la div pour les résultats, qu'on va remplir en fin de partie. En un premier temps, adapte ton <code>index.html</code> comme suit:</p>
+
+            <pre><code class="language-html">
+              &lt;!-- Div pour resultats --&gt;
+              &lt;div id="div_results" style="display: none"&gt;
+                &lt;p id="p_results"&gt;XXX&lt;/p&gt;
+                &lt;ol id="ol_results"&gt;&lt;/ol&gt;
+              &lt;/div&gt;
+            </code></pre>
+
+            <p>On doit créer une variable dans <code>script.js</code> afin de pouvoir modifier cette liste grâce à du JavaScript. Cela ressemble au suivant:</p>
+
+            <pre><code class="language-js">
+              const ol_results = document.getElementById("ol_results");
+            </code></pre>
+
+            <p>Après avoir écrit notre score dans la base de données, dans le <code>.then()</code> qui suit le <code>firestore.collection("Score").add(XXX)</code>, on va lire tous les scores et populer cette liste. On suivra donc le format suivant:</p>
+
+            <pre><code class="language-js">
+              firestore.collection("Score").add({
+                name: nom,
+                score: score
+              })
+              .then(function(docRef) {
+                console.log("Document ajouté avec succès!");
+                // (1) Lire tous les scores
+                // (2) Créer un élément &lt;li&gt; par score lu
+                // (3) Afficher chaque élélemt &lt;li&gt; dans ol_results
+              })
+              .catch(function(error) {
+                console.error("Erreur: ", error);
+              });
+            </code></pre>
+
+            <ol>
+              <li>Pour lire les scores, on fait exactement la même procédure que lorsqu'on a lu les questions dans la variable <code>questions</code>. Ici on va simplement pas ajouter les données du document dans une variable, mais on va créer un élément <code>&lt;li&gt;</code> et l'ajouter au code html.</li>
+              <li>Pour créer un élément <code>&lt;li&gt;</code> par score, on peut utiliser la commande JavaScript <code>createElement</code>. Ainsi, le code suivant va créer un élément <code>&lt;li&gt;</code> et le stocker dans une variable <code>li</code>.
+              <pre><code class="language-js">
+                const li = document.createElement("li");
+              </code></pre>
+              Pour l'instant cet élément est vide. Pour le remplir, on peut utiliser <code>li.innerHTML = "XXX";</code>. Tu peux changer le "XXX" par un texte qui contient le nom du joueur ainsi que son score, par exemple <code>`${doc.data().name} (${doc.data().score})`</code>
+              </li>
+              <li>Finalement, pour ajouter l'élément <code>li</code> créé à l'élément <code>ol_results</code>, on peut utiliser le code JavaScript <code>ol_results.appendChild(li);</code>.</li>
+            </ol>
+
+            <p>Tout ensemble, cela devrait ressembler au code suivant:</p>
+
+            <pre><code class="language-js">
+              firestore.collection("Score").add({
+                name: nom,
+                score: score
+              })
+              .then(function(docRef) {
+                console.log("Document ajouté avec succès!");
+                // Lire tous les scores
+                firestore.collection("Score").get().then(function(collection) {
+                  collection.forEach(function(doc) {
+                    // Créer un élément &lt;li&gt; par score lu
+                    const li = document.createElement("li");
+                    // Afficher chaque élélemt &lt;li&gt; dans ol_results
+                    li.innerHTML = `${doc.data().name} (${doc.data().score})`;
+                    ol_results.appendChild(li);
+                  })
+                })
+              })
+              .catch(function(error) {
+                console.error("Erreur: ", error);
+              });
+            </code></pre>
+
+            <p>Tu devrais maintenant voir un classement lorsque tu finis le quizz!</p>
+
+            <img width="100%" src="images/scoreboard.png" alt="Score Board">
+
+            <p>On a pourtant un petit problème. Les scores ne sont pas dans l'ordre... On peut facilement résoudre cela! Après le <code>firestore.collection("XXX")</code>, mais avant le <code>.get()</code>, ajoute la méthode <code>.orderBy("XXX", "desc")</code>. Remplace le "XXX" par le champ selon lequel tu veux trier (ici "score"). Le "desc" indique qu'on veut trier de manière décroissante (du plus grand score au plus petit score).</p>
+
+            <p>On pourrait aussi ajouter la fonctionalité suivante: Le nom du joueur est en gras. Cela permet de facilement distinguer où il en est sur le classement. Note qu'on a la variable <code>docRef</code>, qui correspond au document qu'on vient d'ajouter (donc celui qui correspond au joueur), et la variable <code>doc</code> pour chaque document dans "Score". On va donc simplement comparer les deux variables (leurs identifiants), et lorsqu'ils sont égaux, mettre le texte en gras.</p>
+
+            <pre><code class="language-js">
+              if (doc.id === docRef.id) {
+                li.style.fontWeight = "bold";
+              }
+            </code></pre>
+
+            <p>Le joueur peut maintenant facilement s'identifier parmi tous les autres joueurs.</p>
+
+            <img width="100%" src="images/bold.png" alt="Bold Score Board">
+
+            <p>Si trop de joueur jouent au quizz, le classement sera beaucoup trop long et n'apportera pas beaucoup d'informations. Il vaut peut être mieux uniquement indiquer les 10 meilleurs dans ce cas. Pour ce faire, après le <code>orderBy(...)</code>, mais avant le <code>.get()</code>, tu peux ajouter un <code>.limit(10)</code>, qui indique qu'on ne récupere uniquement les 10 meilleurs scores.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 6 -->
+      <div class="card">
+        <div class="card-header" id="heading6">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+              Etape 6 - Ex-Aequo dans le Classement
+            </button>
+          </h2>
+        </div>
+        <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>Comme notre quizz n'a pas énormement de questions, il est facile d'arriver ex-aequo avec d'autres joueurs. Dans ce cas, on voudrait toujours pouvoir demarquer les joueurs les uns des autres. Pour ce faire, on va utiliser le temps que le joueur met à finir le quizz, et démarquer les égalités sur base du temps.</p>
+
+            <!-- <p>Tout d'abord, on doit mesurer le temps pris par le joueur. Crée deux variables globales non constantes (donc avec <code>let</code>) qui s'appellent <code>start</code> et <code>end</code>. Au début de la fonction <code>montrerQuestions</code>, indiques <code>start = Date.now();</code>, qui mesure le temps au début du quizz. Au début de la fonction <code>montrerResultats</code> tu peux mettre <code>end = Date.now();</code>, qui mesure le temps à la fin du quizz. On peut alors facilement calculer le temps pris par le joueur en millisecondes en les soustrayant: <code>let time = end - start;</code>. Tu peux ajouter la variable <code>time</code> dans le texte affiché au joueur en fin de quizz.</p> -->
+
+            <p>On va ajouter la variable <code>time</code> au document qu'on ajoute à la collection "Score". Ceci se fait dans le dictionnaire dans le <code>.set(XXX)</code>.</p>
+            
+            <p>Avant de relancer le quizz, va sur <a href="https://console.firebase.google.com/u/1/">Firebase</a>, s ton projet, et va sur "Firestore Database" dans la barre à gauche. Met ta souris sur la collection "Score", et tu verras trois petits points apparaître. Appuies dessus, sélectionne "Delete collection", et confirme en tapant "Score" dans la case texte. Ceci va effacer la collection et ainsi remettre à zéro le classement. Si tu lances le quizz maintenant, tu devrais voir les scores se remettre dans la collection "Score", avec une entrée <code>time</code> également maintenant.</p>
+
+            <p>Dans le contenu de l'élément <code>li</code>, défini par <code>li.innerHTML</code>, tu peux ajouter le temps également.</p>
+
+            <p>Dernière chose à faire; On doit s'assurer que les ex-aequo sont démarqués par le temps. Afin de ce faire, on peut trier après la variable <code>time</code>, <b>après</b> qu'on ait déjà trié par la variable <code>score</code>. En effet, on veut toujours qu'on score élévé avec un temps énorme soit plus haut dans le classement qu'un score faible avec un temps rapide. Ainsi, entre le <code>.orderBy("score", "desc")</code> et le <code>.limit(10)</code>, ajoute <code>.orderBy("time")</code>. Ici, on ne précise pas <code>"desc"</code>, comme on veut les petits temps d'abord, et on a pas besoin de préciser que ce soit dans un ordre croissant comme c'est l'ordre par défaut.</p>
+
+            <p><b>Attention!</b> Ceci va générer un message d'erreur dans la console, et les scores ne s'afficheront pas. En effet, comme on utilise deux indicateurs d'ordre pour la collection (<code>orderBy("score", "desc")</code> et <code>orderBy("time")</code>), on doit d'abord autoriser cette combinaison.</p>
+
+            <p>Pour autoriser la combinaison, on doit créer quelque chose qui s'appelle un "Index" dans Firebase. Va sur <a href="https://console.firebase.google.com/u/1/">Firebase</a>, sélectionne ton projet, et va sur "Firestore Database" dans la barre à gauche. En haut de l'écran tu verras un onglet "Indexes". Clique dessus et choisi "Create index". Indique le nom de la collection pour laquelle tu veux créer un index (ici "Score"), et ensuite rempli les cases avec "score" en choissant "Descending", et "time" en choissant "Ascending". Sous "Query scopes" sélectionne "Collection", et ensuite sélectionne "Create index".</p>
+
+            <img width="100%" src="images/index.png" alt="Create Index">
+
+            <p>Tu verras alors ton index sur l'écran. Tout à droite il y a une colonne "Status". Au début, le statut sera "Building" (en construction). Il faudra attendre que ce statut change à "Enabled" avant de procéder. Cela peut prendre quelques minutes.</p>
+
+            <img width="100%" src="images/enabled.png" alt="Enabled Index">
+
+            <p>Retourne sur ton quizz et relance-le. L'erreur devrait avoir disparue, et tu devrais pouvoir trier les joueurs par temps sans problèmes.</p>
+
+            <img width="100%" src="images/score_time.png" alt="Scoreboard with Time">
+          </div>
+        </div>
+      </div>
+
+      <!-- Etape 7 -->
+      <div class="card">
+        <div class="card-header" id="heading7">
+          <h2 class="mb-0">
+            <button class="btn btn-link task" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+              Etape 7 - Résumé
+            </button>
+          </h2>
+        </div>
+        <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionexemple">
+          <div class="card-body">
+            <p>Ceci était une fiche un peu plus avancée que d'habitude. Voici un petit résumé de tout ce qui a été couvert:</p>
+
+            <ol>
+              <li><b>Firebase</b> est un système qui propose plein d'outils pour les sites internet. Un de ces outils est <b>Firestore</b>, une base de données. Firestore fonctionne avec des collections qui contiennent des documents.</li>
+              <li>Pour configurer Firebase et Firestore dans notre application, on ajoute le code suivant dans le <code>head</code> du document <code>index.html</code>:
+              <pre><code class="language-html">
+                &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"&gt;&lt;/script&gt;
+                &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"&gt;&lt;/script&gt;
+              </code></pre>
+              Dans le document <code>script.js</code>, on doit ajouter le code suivant, qui initialise Firebase et se connecte à la base de données Firestore:
+              <pre><code class="language-js">
+                // Configuration Firebase
+                const firebaseConfig = {XXX};
+
+                // Initialiser Firebase
+                firebase.initializeApp(firebaseConfig);
+
+                // Initialiser Firestore
+                const firestore = firebase.firestore();
+              </code></pre>
+              Tu peux retrouver le firebaseConfig sur Firebase si tu l'as perdu (Sur l'engrenage à côté de "Project Overview", puis "Project Settings", tout en bas).
+              </li>
+              <li>
+                Pour lire tous les documents d'une collection, on peut faire ainsi:
+                <pre><code class="language-js">
+                  firestore.collection("NOM DE COLLECTION").get().then(function (collection) {
+                    collection.forEach((doc) => {
+                      console.log(doc.data())
+                    });
+                  });
+                </code></pre>
+              </li>
+              <li>
+                Pour ajouter un nouvel document dans une collection, on peut faire ainsi:
+                <pre><code class="language-js">
+                  firestore.collection("NOM DE COLLECTION").add({
+                    name: nom, 
+                    ...
+                  }).then(function(docRef) {
+                    console.log("Document ajouté avec succès!");
+                  }).catch(function(error) {
+                    console.error("Erreur: ", error);
+                  });
+                </code></pre>
+              </li>
+              <li>Si on veut lire tous les documents d'une collection dans une manière ordonnées, on utilise <code>.orderBy()</code>. Par exemple, si on veut trier les documents par la variable <code>time</code>, on ferait 
+                <pre><code class="language-js">
+                  firestore.collection("NOM DE COLLECTION").orderBy("time").get().then(function (collection) {
+                    // ...
+                  });
+                </code></pre>
+                Pour trier dans le sens décroissant, on ajoute le mot "desc", notamment <code>.orderBy("time", "desc")</code>. On peut trier sur plusieurs clés, mais on doit alors créer un <b>Index</b>.
+              </li>
+              <li>Si on veut uniquement retirer les 10 premiers documents, on ajoute <code>.limit(10)</code> avant le <code>.get()</code>. Par exemple:
+                <pre><code class="language-js">
+                  firestore.collection("NOM DE COLLECTION").limit(10).get().then(function (collection) {
+                    // ...
+                  });
+                </code></pre>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+
+    </div> 
+  </div>
+
+
+
+<div class="footer">
+  <div class="footer-links">
+    <a href="https://tictaclab.org"><i class="fas fa-globe"></i></i></a>
+    <a href="https://www.facebook.com/TicTacLabBXL/"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.instagram.com/tictaclabbxl/"><i class="fab fa-instagram"></i></a>
+    <a href="https://twitter.com/TicTacLabBXL"><i class="fab fa-twitter"></i></a>
+  </div>
+  <div class="footer-copyright">
+    <a href="https://tictaclab.org" rel="noopener noreferrer" target="_blank" class="alert-link copyright">
+      <i class="far fa-copyright"></i> 2024 Tic Tac Lab ASBL. All rights reserved.
+    </a>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="javascript/prism.js"></script>
+</body>
+</html>
