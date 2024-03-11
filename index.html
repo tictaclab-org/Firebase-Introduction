@@ -40,9 +40,9 @@
         </div>
         <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordionexemple">
           <div class="card-body">
-            <p>Aujourd'hui on va explorer le monde des bases de données. Une base de données est, comme le nom d'indique, un lieu centralisé pour garder toutes les données importantes de notre site. De cette manière, pas toutes les informations sont stockées sur le site lui même, permettant d'interagir avec d'autres individuels. Nous allons travailler sur un exemple de jeu de Quizz.</p>
+            <p>Aujourd'hui on va explorer le monde des bases de données. Une base de données est, comme le nom l'indique, un lieu centralisé pour garder toutes les données importantes de notre site. De cette manière, pas toutes les informations sont stockées sur le site lui même, permettant d'interagir avec d'autres personnes. Nous allons travailler sur un exemple de jeu de Quiz.</p>
 
-            <p>Nous allons utiliser un système qui s'appelle <b>Firebase</b>. Firebase est un système qui propose une grande multitude de services pour des applications web. Un des services est <b>Firestore</b>, un service de base de données.</p>
+            <p>Nous allons utiliser un système qui s'appelle <b>Firebase</b>. Firebase est un système qui propose une multitude de services pour des applications web. Un des services est <b>Firestore</b>, un service de base de données.</p>
 
             <p>Pour correctement entamer cette fiche, assure-toi que tu as:</p>
             <ul>
@@ -65,12 +65,12 @@
         </div>
         <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionexemple">
           <div class="card-body">
-            <p>Avant d'ajouter Firebase à notre application, nous devons avoir une application de base. L'application d'aujourd'hui sera un jeu de quizz. Il sera structuré selon la structure suivante:</p>
+            <p>Avant d'ajouter Firebase à notre application, nous devons avoir une application de base. L'application d'aujourd'hui sera un jeu de quiz. Il sera structuré de la façon suivante:</p>
             <ul>
               <li>Au début, l'application demande le nom du joueur, et affiche un bouton pour commencer le jeu.</li>
-              <li>Ensuite, plusieurs questions s'afficheront l'une après l'autre. Pour chaque question, la question ainsi que 4 options seront affichées. Le joueur est amené à séléctionner une option, et d'appuyer sur le bouton pour continuer vers la question suivante.</li>
+              <li>Ensuite, plusieurs questions s'afficheront l'une après l'autre. Pour chaque question, la question ainsi que 4 choix de réponses seront affichées. Le joueur est invité à sélectionner une réponse et à appuyer sur le bouton pour continuer vers la question suivante.</li>
               <li>Après toutes les questions, le score et le temps du joueur est affiché.</li>
-              <li>Nous allons également ajouter un classement plus tard.</li>
+              <li>Plus tard, nous ajouterons un classement des joueurs.</li>
             </ul>
 
             <p>Le but de ce cours n'est pas de développer un jeu front-end. Le code de base est entièrement listé ci-dessous. Assure-toi de le parcourir en entier et de répondre correctement aux questions en fin d'étape.</p>
@@ -80,11 +80,11 @@
               &lt;!DOCTYPE html&gt;
               &lt;html&gt;
               &lt;head&gt;
-                  &lt;title&gt;Quizz&lt;/title&gt;
+                  &lt;title&gt;Quiz&lt;/title&gt;
                   &lt;script src="questions.js"&gt;&lt;/script&gt;
               &lt;/head&gt;
               &lt;body&gt;
-                  &lt;!-- Div pour formulaire pour demander le nom et commencer le quizz --&gt;
+                  &lt;!-- Div pour formulaire pour demander le nom et commencer le quiz --&gt;
                   &lt;div id="div_nom"&gt;
                       &lt;form id="form_nom"&gt;
                           &lt;label for="nom"&gt;Nom:&lt;/label&gt;
@@ -179,16 +179,16 @@
               const div_results   = document.getElementById("div_results");
               const p_results     = document.getElementById("p_results");
 
-              // Function pour collecter nom et passer aux questions
+              // Fonction pour obtenir le nom du joueur et passer aux questions
               function montrerQuestions(event) {
                   event.preventDefault();
                   start = Date.now();
 
-                  // Collecter réponse du formulaire
+                  // Obtenir la réponse du formulaire
                   const data = Object.fromEntries(new FormData(event.target));
                   nom = data["nom"];
 
-                  // Cacher div pour le nom, et montrer div pour les questions
+                  // Cacher la div pour le nom, et montrer la div pour les questions
                   div_nom.style.display = "none";
                   div_question.style.display = "block";
 
@@ -196,11 +196,11 @@
                   questionSuivante();
               }
 
-              // Function pour corriger question et changer de question
+              // Fonction pour corriger une question et changer de question
               function montrerQuestionSuivante(event) {
                   event.preventDefault();
 
-                  // Collecter réponse du joueur
+                  // Obtenir la réponse du joueur
                   const data = Object.fromEntries(new FormData(event.target));
                   let res = data["reponse"];
 
@@ -213,12 +213,12 @@
                   questionSuivante();
               }
 
-              // Function pour passer à la question suivante
+              // Fonction pour passer à la question suivante
               function questionSuivante() {
                   // Mettre à jour le numéro de la question
                   question_id += 1;
 
-                  // Si à la fin des questions, passer aux résultats
+                  // Si le joueur est à la fin des questions, passer aux résultats
                   if (question_id == question_total) {
                       montrerResultats();
                   } else {
@@ -252,7 +252,7 @@
               form_question.addEventListener("submit", montrerQuestionSuivante);
             </code></pre>
 
-            <p>Une fois que tu as le code prêt de ton côté, assure-toi qu'il fonctionne correctement. Ensuite, répond aux questions suivantes;</p>
+            <p>Une fois que tu as le code prêt de ton côté, assure-toi qu'il fonctionne correctement. Ensuite, répond aux questions suivantes:</p>
 
             <ol>
               <li>Comment change-t-on le contenu texte d'un paragraphe grâce à JavaScript?</li>
@@ -306,7 +306,7 @@
             </code></pre>
 
             <p>Ensuite, on va activer la base de données Firestore. Appuies sur "Cloud Firestore", et "Create database". </p>
-              
+
             <img width="100%" src="images/firestore.png" alt="Firestore">
 
             <p>Choisis une location locale (eur3 par exemple), et ensuite "Create". Avant d'intégere la base de données, on va désactiver la protection de la base de données, afin qu'on puisse jouer avec. Navigues sur "Rules", et changes le <code>false</code> sur la ligne 6 par un <code>true</code>, afin que le code lise</p>
@@ -414,7 +414,7 @@
         </div>
         <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionexemple">
           <div class="card-body">
-            <p>À la fin de notre quizz, le site affiche combien de points le joueur a obtenu. Mais s'il ne peut pas comparer avec d'autres c'est pas super intéressant. On va donc changer cela! Il y a deux étapes à faire afin d'arriver à cela:</p>
+            <p>À la fin de notre quiz, le site affiche combien de points le joueur a obtenu. Mais s'il ne peut pas comparer avec d'autres c'est pas super intéressant. On va donc changer cela! Il y a deux étapes à faire afin d'arriver à cela:</p>
             <ol>
               <li>Premièrement, lorsqu'on joueur finit le jeu, on doit sauvegarder son nom et son score dans la base de données. Ainsi, on doit pouvoir écrire dans la base de données à partir du code (pour l'instant on n'a fait que lire dans la base de données).</li>
               <li>Secondement, en fin de jeu, on doit lire les scores de tous les autres joueurs et les afficher.</li>
@@ -449,7 +449,7 @@
 
             <p>Ajoute un code similaire à celui de ci-haut, en adaptant la collection pour être "Score", en adaptant les valeurs du dictionnaire. Le dictionnaire doit contenir deux entrées, notamment <code>name: XXX</code> et <code>score: XXX</code>.</p>
 
-            <p>Joue à ton Quizz une fois et vérifies dans Firebase que la collection "Score" s'est bien créé, et que ton score a bien été ajouté.</p>
+            <p>Joue à ton Quiz une fois et vérifies dans Firebase que la collection "Score" s'est bien créé, et que ton score a bien été ajouté.</p>
 
             <img width="100%" src="images/score.png" alt="Score">
 
@@ -523,7 +523,7 @@
               });
             </code></pre>
 
-            <p>Tu devrais maintenant voir un classement lorsque tu finis le quizz!</p>
+            <p>Tu devrais maintenant voir un classement lorsque tu finis le quiz!</p>
 
             <img width="100%" src="images/scoreboard.png" alt="Score Board">
 
@@ -541,7 +541,7 @@
 
             <img width="100%" src="images/bold.png" alt="Bold Score Board">
 
-            <p>Si trop de joueur jouent au quizz, le classement sera beaucoup trop long et n'apportera pas beaucoup d'informations. Il vaut peut être mieux uniquement indiquer les 10 meilleurs dans ce cas. Pour ce faire, après le <code>orderBy(...)</code>, mais avant le <code>.get()</code>, tu peux ajouter un <code>.limit(10)</code>, qui indique qu'on ne récupere uniquement les 10 meilleurs scores.</p>
+            <p>Si trop de joueur jouent au quiz, le classement sera beaucoup trop long et n'apportera pas beaucoup d'informations. Il vaut peut être mieux uniquement indiquer les 10 meilleurs dans ce cas. Pour ce faire, après le <code>orderBy(...)</code>, mais avant le <code>.get()</code>, tu peux ajouter un <code>.limit(10)</code>, qui indique qu'on ne récupere uniquement les 10 meilleurs scores.</p>
           </div>
         </div>
       </div>
@@ -557,13 +557,13 @@
         </div>
         <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionexemple">
           <div class="card-body">
-            <p>Comme notre quizz n'a pas énormement de questions, il est facile d'arriver ex-aequo avec d'autres joueurs. Dans ce cas, on voudrait toujours pouvoir demarquer les joueurs les uns des autres. Pour ce faire, on va utiliser le temps que le joueur met à finir le quizz, et démarquer les égalités sur base du temps.</p>
+            <p>Comme notre quiz n'a pas énormement de questions, il est facile d'arriver ex-aequo avec d'autres joueurs. Dans ce cas, on voudrait toujours pouvoir demarquer les joueurs les uns des autres. Pour ce faire, on va utiliser le temps que le joueur met à finir le quiz, et démarquer les égalités sur base du temps.</p>
 
-            <!-- <p>Tout d'abord, on doit mesurer le temps pris par le joueur. Crée deux variables globales non constantes (donc avec <code>let</code>) qui s'appellent <code>start</code> et <code>end</code>. Au début de la fonction <code>montrerQuestions</code>, indiques <code>start = Date.now();</code>, qui mesure le temps au début du quizz. Au début de la fonction <code>montrerResultats</code> tu peux mettre <code>end = Date.now();</code>, qui mesure le temps à la fin du quizz. On peut alors facilement calculer le temps pris par le joueur en millisecondes en les soustrayant: <code>let time = end - start;</code>. Tu peux ajouter la variable <code>time</code> dans le texte affiché au joueur en fin de quizz.</p> -->
+            <!-- <p>Tout d'abord, on doit mesurer le temps pris par le joueur. Crée deux variables globales non constantes (donc avec <code>let</code>) qui s'appellent <code>start</code> et <code>end</code>. Au début de la fonction <code>montrerQuestions</code>, indiques <code>start = Date.now();</code>, qui mesure le temps au début du quiz. Au début de la fonction <code>montrerResultats</code> tu peux mettre <code>end = Date.now();</code>, qui mesure le temps à la fin du quiz. On peut alors facilement calculer le temps pris par le joueur en millisecondes en les soustrayant: <code>let time = end - start;</code>. Tu peux ajouter la variable <code>time</code> dans le texte affiché au joueur en fin de quiz.</p> -->
 
             <p>On va ajouter la variable <code>time</code> au document qu'on ajoute à la collection "Score". Ceci se fait dans le dictionnaire dans le <code>.set(XXX)</code>.</p>
-            
-            <p>Avant de relancer le quizz, va sur <a href="https://console.firebase.google.com/u/1/">Firebase</a>, s ton projet, et va sur "Firestore Database" dans la barre à gauche. Met ta souris sur la collection "Score", et tu verras trois petits points apparaître. Appuies dessus, sélectionne "Delete collection", et confirme en tapant "Score" dans la case texte. Ceci va effacer la collection et ainsi remettre à zéro le classement. Si tu lances le quizz maintenant, tu devrais voir les scores se remettre dans la collection "Score", avec une entrée <code>time</code> également maintenant.</p>
+
+            <p>Avant de relancer le quiz, va sur <a href="https://console.firebase.google.com/u/1/">Firebase</a>, s ton projet, et va sur "Firestore Database" dans la barre à gauche. Met ta souris sur la collection "Score", et tu verras trois petits points apparaître. Appuies dessus, sélectionne "Delete collection", et confirme en tapant "Score" dans la case texte. Ceci va effacer la collection et ainsi remettre à zéro le classement. Si tu lances le quiz maintenant, tu devrais voir les scores se remettre dans la collection "Score", avec une entrée <code>time</code> également maintenant.</p>
 
             <p>Dans le contenu de l'élément <code>li</code>, défini par <code>li.innerHTML</code>, tu peux ajouter le temps également.</p>
 
@@ -579,7 +579,7 @@
 
             <img width="100%" src="images/enabled.png" alt="Enabled Index">
 
-            <p>Retourne sur ton quizz et relance-le. L'erreur devrait avoir disparue, et tu devrais pouvoir trier les joueurs par temps sans problèmes.</p>
+            <p>Retourne sur ton quiz et relance-le. L'erreur devrait avoir disparue, et tu devrais pouvoir trier les joueurs par temps sans problèmes.</p>
 
             <img width="100%" src="images/score_time.png" alt="Scoreboard with Time">
           </div>
@@ -633,7 +633,7 @@
                 Pour ajouter un nouvel document dans une collection, on peut faire ainsi:
                 <pre><code class="language-js">
                   firestore.collection("NOM DE COLLECTION").add({
-                    name: nom, 
+                    name: nom,
                     ...
                   }).then(function(docRef) {
                     console.log("Document ajouté avec succès!");
@@ -642,7 +642,7 @@
                   });
                 </code></pre>
               </li>
-              <li>Si on veut lire tous les documents d'une collection dans une manière ordonnées, on utilise <code>.orderBy()</code>. Par exemple, si on veut trier les documents par la variable <code>time</code>, on ferait 
+              <li>Si on veut lire tous les documents d'une collection dans une manière ordonnées, on utilise <code>.orderBy()</code>. Par exemple, si on veut trier les documents par la variable <code>time</code>, on ferait
                 <pre><code class="language-js">
                   firestore.collection("NOM DE COLLECTION").orderBy("time").get().then(function (collection) {
                     // ...
@@ -663,7 +663,7 @@
       </div>
 
 
-    </div> 
+    </div>
   </div>
 
 

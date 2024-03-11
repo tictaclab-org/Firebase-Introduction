@@ -6,9 +6,9 @@
 // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // const firebaseConfig = {
 //   apiKey: "AIzaSyBOANjd-6RjvBFiZvxVmZN2DaEHdzSIYKY",
-//   authDomain: "ttl---quizz.firebaseapp.com",
-//   projectId: "ttl---quizz",
-//   storageBucket: "ttl---quizz.appspot.com",
+//   authDomain: "ttl---quiz.firebaseapp.com",
+//   projectId: "ttl---quiz",
+//   storageBucket: "ttl---quiz.appspot.com",
 //   messagingSenderId: "907278725920",
 //   appId: "1:907278725920:web:430c9316e1c4a387b21d45",
 //   measurementId: "G-1V4Y99ZF8N"
