@@ -288,28 +288,28 @@
             <p>Pour commencer à utiliser Firebase, on doit y ajouter une application. Dans le centre de l'écran, sélectionne l'icône central de web.</p>
             <img width="100%" src="images/web.png" alt="Web Project">
 
-            <p>Ici, donne un nom pour ton site, et choisis "Register app" (sans choisir "Also set up Firebase Hosting for this app."). Une fois que l'application enregistrée, copies la variable <code>firebaseConfig</code> (entière, environ 9 lignes), et colles la variable entière au début de ton code <code>script.js</code>. Tu peux ignorer le restant du code donné par Firebase. <b>Attention!</b> Le code ci-dessous est pour illustrer quoi copier, mais ton code sera différent!</p>
+            <p>Ici, donne un nom pour ton site, et choisis "Register app" (sans choisir "Also set up Firebase Hosting for this app."). Une fois que l'application enregistrée, copie la variable <code>firebaseConfig</code> (entière, environ 9 lignes), et colle la variable entière au début de ton code <code>script.js</code>. Tu peux ignorer le restant du code donné par Firebase. <b>Attention!</b> Le code ci-dessous est pour illustrer quoi copier, mais ton code sera différent!</p>
 
             <img width="100%" src="images/keyt.png" alt="Configuration Key">
 
-            <p>Maintenant que l'application existe, on doit l'ajouter à notre code. La variable <code>firebaseConfig</code> que tu as copié constitue les codes d'accès à ton application, mais on doit ajouter l'interface pour s'y connecter. Tout d'abord, il nous faut installer Firebase dans notre application. Afin de ce faire, ajoute la ligne suivante dans le <code>head</code>.</p>
+            <p>Maintenant que l'application existe, on doit l'ajouter à notre code. La variable <code>firebaseConfig</code> que tu as copiée constitue les codes d'accès à ton application, mais on doit ajouter l'interface pour s'y connecter. Tout d'abord, il nous faut installer Firebase dans notre application. Afin de ce faire, ajoute la ligne suivante dans le <code>head</code>.</p>
 
             <pre><code class="language-js">
               &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"&gt;&lt;/script&gt;
             </code></pre>
 
-            <p>Grâce à cette ligne, on a toutes les fonctions de Firebase disponible dans notre code. Et comme notre <code>script.js</code> vient après (en fin de <code>body</code>), on peut les utiliser dans <code>script.js</code>. Utilisons donc la variable que nous avions copié-collé plus tôt, en ajoutant la ligne suivante en dessus de la variable.</p>
+            <p>Grâce à cette ligne, on a toutes les fonctions de Firebase disponible dans notre code. Et comme notre <code>script.js</code> vient après (en fin de <code>body</code>), on peut l'utiliser dans <code>script.js</code>. Utilisons donc la variable que nous avions copié-collé plus tôt, en ajoutant la ligne suivante en dessus de la variable.</p>
 
             <pre><code class="language-js">
               // Initialiser Firebase
               firebase.initializeApp(firebaseConfig);
             </code></pre>
 
-            <p>Ensuite, on va activer la base de données Firestore. Appuies sur "Cloud Firestore", et "Create database". </p>
+            <p>Ensuite, on va activer la base de données Firestore. Appuie sur "Cloud Firestore", et "Create database". </p>
 
             <img width="100%" src="images/firestore.png" alt="Firestore">
 
-            <p>Choisis une location locale (eur3 par exemple), et ensuite "Create". Avant d'intégere la base de données, on va désactiver la protection de la base de données, afin qu'on puisse jouer avec. Navigues sur "Rules", et changes le <code>false</code> sur la ligne 6 par un <code>true</code>, afin que le code lise</p>
+            <p>Choisis une location locale (eur3 par exemple), et ensuite "Create". Avant d'intégrer la base de données, on va désactiver la protection de la base de données, afin qu'on puisse jouer avec. Navigue sur "Rules", et change le <code>false</code> sur la ligne 6 par un <code>true</code>, afin que le code lise</p>
 
             <pre><code class="language-js">
               rules_version = '2';
@@ -323,14 +323,14 @@
               }
             </code></pre>
 
-            <p>Lorsque le code est modifié, appuies sur "Publish". Le changement effectué permet à tout le monde de lire et d'écrire dans la base de données. On pourra ajouter un niveau de sécurité plus tard, pour l'instant ceci suffira.</p>
+            <p>Lorsque le code est modifié, appuie sur "Publish". Le changement effectué permet à tout le monde de lire et d'écrire dans la base de données. On pourra ajouter un niveau de sécurité plus tard, pour l'instant ceci suffira.</p>
 
-            <p>Nous devons également importer la base de données dans notre code. Dans le <code>index.html</code>, ajoutes la ligne suivante dans le <code>head</code>, après la ligne d'importation de Firebase:</p>
+            <p>Nous devons également importer la base de données dans notre code. Dans le <code>index.html</code>, ajoute la ligne suivante dans le <code>head</code>, après la ligne d'importation de Firebase:</p>
             <pre><code class="language-html">
               &lt;script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"&gt;&lt;/script&gt;
             </code></pre>
 
-            <p>Dans le <code>script.js</code>, en dessus de l'initialisation de firebase, tu peux ajouter la ligne suivante, qui actives firestore:</p>
+            <p>Dans le <code>script.js</code>, en dessus de l'initialisation de firebase, tu peux ajouter la ligne suivante, qui active firestore:</p>
 
             <pre><code class="language-js">
               // Initialiser Firestore
